@@ -11,19 +11,13 @@ class App extends Component {
   render() {
     return (
       <div className="App">
+        <NavBar/>
+        <Divider hidden/>
           <Route exact path='/' render={() => (
-            <div  className="Main">
-              <NavBar/>
-              <Divider hidden/>
               <ListPosts/>
-            </div>
-
           )}/>
-          <Route exact path='/search' render={({ history }) => (
-            <div>
-            <h1 className="App-title">Nice</h1>
-            <img src={logo} className="App-logo" alt="logo" />
-            </div>
+          <Route  exact path='/category/:category' render={(match) => (
+              <ListPosts category={match.params}/>
           )}/>
       </div>
     );

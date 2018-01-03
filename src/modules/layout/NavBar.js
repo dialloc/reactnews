@@ -18,7 +18,7 @@ export class NavBar extends Component{
              <Menu.Item as={Link} to='/' name='ReactNews' />
              {this.props.categories&& this.props.categories
                .map( (cat)=>(
-                 <Menu.Item  key={cat.path} as={Link} to={cat.path} name={cat.name} />
+                 <Menu.Item  key={cat.path} as={Link} to={'/category/'+cat.path} name={cat.name} />
                ))
              }
             </Menu>
