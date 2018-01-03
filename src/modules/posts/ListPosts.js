@@ -7,15 +7,20 @@ import {fetchPosts} from './postsActions'
 
 export class ListPosts extends Component{
 
-
-
   componentDidMount() {
-    const { category, sortBy, dispatch} = this.props
-    this.props.dispatch(fetchPosts(category,sortBy));
+    const { match, sortBy, dispatch} = this.props
+    this.props.dispatch(fetchPosts(match.params.category,sortBy));
+
+  }
+
+  componentWillReceiveProps() {
+    const { match, sortBy, dispatch} = this.props
+    this.props.dispatch(fetchPosts(match.params.category,sortBy));
 
   }
 
   render (){
+    console.log(this.props.match.params.category);
     return (
       <Container className="ListPosts">
         <Item.Group relaxed>
