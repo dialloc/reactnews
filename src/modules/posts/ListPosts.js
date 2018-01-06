@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
-import { Button, Item, Label , Container} from 'semantic-ui-react'
+import { Button, Item, Label , Container, Select, Divider} from 'semantic-ui-react'
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import {fetchPosts} from './postsActions'
+import {fetchPosts,sortPosts} from './postsActions'
 
 
 export class ListPosts extends Component{
@@ -14,17 +14,25 @@ export class ListPosts extends Component{
   }
 
   componentWillReceiveProps(newProps) {
-    if(newProps.match.params.category !== this.props.match.params.category) {
+    if(newProps.match.params.category !== this.props.match.params.category
+      || newProps.sortBy !== this.props.sortBy) {
       const { match, sortBy, dispatch} = newProps;
       this.props.dispatch(fetchPosts(match.params.category,sortBy));
     }
 
   }
 
+
   render (){
     console.log(this.props.match.params.category);
     return (
       <Container className="ListPosts">
+       <Select
+       onChange={(event,data)=>this.props.dispatch(sortPosts(data.value))}
+              placeholder='Sort posts by'
+        options={[{ key: 'voteScore', value: 'voteScore', icon :'sort ascending', text: 'Sort by vote '}
+                 ,{ key: 'timestamp', value: 'timestamp', icon :'sort ascending', text: 'Sort by date'}]} />
+       <Divider hidden/>
         <Item.Group relaxed>
             {this.props.posts && this.props.posts
               .map( (post)=>(
@@ -56,7 +64,8 @@ export class ListPosts extends Component{
 
 function mapStateToProps (state) {
   return {
-    posts: state.postsReducer.posts
+    posts: state.postsReducer.posts,
+    sortBy: state.postsReducer.sortBy
   }
 }
 

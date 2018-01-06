@@ -1,4 +1,4 @@
-import { FETCH_POSTS , DISPLAY_POSTS} from './postsActions';
+import { FETCH_POSTS , DISPLAY_POSTS , SORT_POSTS} from './postsActions';
 
 const postsReducer = (state={},action)=>{
   switch(action.type){
@@ -6,7 +6,8 @@ const postsReducer = (state={},action)=>{
       return {...state,fetchingPosts:true};
     case DISPLAY_POSTS:
       return {...state,posts:action.posts,fetchingPosts:false};
-
+    case SORT_POSTS:
+      return {...state,sortBy:action.sortBy};
     default:
     break;
   }

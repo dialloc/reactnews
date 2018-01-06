@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import { Link } from 'react-router-dom';
-import { Menu, Container } from 'semantic-ui-react';
+import { Menu, Container ,Button} from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import  {fetchCategories}  from '../categories/categoriesActions';
 
@@ -21,6 +21,11 @@ export class NavBar extends Component{
                  <Menu.Item  key={cat.path} as={Link} to={'/category/'+cat.path} name={cat.name} />
                ))
              }
+             <Menu.Menu position='right'>
+               <Menu.Item>
+                 <Button color='blue' icon='plus' as='a' key='add-post' primary>Add Post</Button>
+               </Menu.Item>
+           </Menu.Menu>
             </Menu>
           </Container>
     )
