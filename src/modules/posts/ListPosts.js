@@ -13,9 +13,11 @@ export class ListPosts extends Component{
 
   }
 
-  componentWillReceiveProps() {
-    const { match, sortBy, dispatch} = this.props
-    this.props.dispatch(fetchPosts(match.params.category,sortBy));
+  componentWillReceiveProps(newProps) {
+    if(newProps.match.params.category !== this.props.match.params.category) {
+      const { match, sortBy, dispatch} = newProps;
+      this.props.dispatch(fetchPosts(match.params.category,sortBy));
+    }
 
   }
 
