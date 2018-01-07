@@ -1,3 +1,4 @@
 import ListPosts  from './ListPosts';
 import Post from './Post';
-export {ListPosts,Post};
+import AddPost from './AddPost';
+export {ListPosts,Post,AddPost};

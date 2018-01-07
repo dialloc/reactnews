@@ -7,6 +7,8 @@ export const DISPLAY_POSTS = 'DISPLAY_POSTS';
 
 export const SORT_POSTS = 'SORT_POSTS';
 
+export const ADD_POST = 'ADD_POST';
+
 export function fetchPosts (category,sortBy) {
   return (dispatch) => {
     return  newsApi.getPosts(category,sortBy).then((posts) => {
@@ -16,6 +18,11 @@ export function fetchPosts (category,sortBy) {
 }
 
 export function sortPosts (sortBy) {
-  console.log('change sortBy : '+sortBy);  
+  console.log('change sortBy : '+sortBy);
   return  {type:SORT_POSTS,sortBy:sortBy};
+}
+
+export function addPost (data) {
+  console.log('add post : '+data);
+  return  {type:ADD_POST,data:data};
 }
