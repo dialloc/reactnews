@@ -1,8 +1,11 @@
 import React, {Component} from 'react';
-import { Button, Item, Label , Container , Grid, Form} from 'semantic-ui-react'
+import { Field, reduxForm } from 'redux-form';
+import { Button, Item, Label , Container , Grid, Form, TextArea, Select} from 'semantic-ui-react'
+import { LabelInputField,TextAreaField,SelectField } from 'react-semantic-redux-form';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import {addPost} from './postsActions'
+import {addPost} from './postsActions';
+
 
 
 export class AddPost extends Component{
@@ -14,7 +17,14 @@ export class AddPost extends Component{
 
 
   render (){
-    console.log(this.props.match.params.category);
+    let options=[];
+    if(this.props.categories!==null && this.props.categories!==undefined){
+      options= this.props.categories.reduce(function(options, categorie){
+          options.push({ 'key': categorie.name, 'value': categorie.name, 'text': categorie.name});
+          return options;
+        },[]);
+    }
+    console.log(options);
     return (
       <Container>
       <Grid className="AddPost" columns={3}
@@ -22,15 +32,14 @@ export class AddPost extends Component{
       verticalAlign='middle'>
       <Grid.Column style={{ maxWidth: 450 }}>
         <Form>
-          <Form.Field>
-            <label>First Name</label>
-            <input placeholder='First Name' />
+          <Field name='title' component={LabelInputField} placeholder='Title' />
+          <Field name='author' component={LabelInputField} placeholder='Author' />
+          <Field name='body' component={TextAreaField} placeholder='Body' />
+          <Field name='category' component={SelectField} placeholder='Select category' options={options} />
+          <Form.Field control={Button} primary className='submit-btn'
+            type='submit'>
+            Submit
           </Form.Field>
-          <Form.Field>
-            <label>Last Name</label>
-            <input placeholder='Last Name' />
-          </Form.Field>
-          <Button type='submit'>Submit</Button>
         </Form>
         </Grid.Column>
          </Grid>
@@ -39,10 +48,28 @@ export class AddPost extends Component{
   }
 }
 
+const validate = values => {
+  const errors = {}
+  if (!values.title) {
+    errors.title = 'Title is Required'
+  }
+
+  if (!values.author) {
+    errors.author = 'Author is Required'
+  }
+
+  if (!values.body) {
+    errors.body = 'Body is Required'
+  }
+
+  if (!values.category) {
+    errors.category = 'Category is Required'
+  }
+  return errors;
+}
 function mapStateToProps (state) {
   return {
-    posts: state.postsReducer.posts,
-    sortBy: state.postsReducer.sortBy
+    categories: state.categoriesReducer.categories
   }
 }
 
@@ -52,7 +79,13 @@ function mapDispatchToProps (dispatch) {
   }
 }
 
-export default connect(
+AddPost = connect(
   mapStateToProps,
   mapDispatchToProps
-)(AddPost)
+)(AddPost);
+
+export default reduxForm({
+    form: 'addPostForm',
+     enableReinitialize: true,
+    validate
+})(AddPost);
