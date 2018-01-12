@@ -23,7 +23,7 @@ export class NavBar extends Component{
              }
              <Menu.Menu position='right'>
                <Menu.Item>
-                 <Button color='pink'><Link to='/add-post' name='Add Post'>Add Post</Link></Button>
+                 <Link to='/add-post' name='Add Post'>Add Post</Link>
                </Menu.Item>
            </Menu.Menu>
             </Menu>
