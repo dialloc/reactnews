@@ -5,18 +5,16 @@ import { LabelInputField,TextAreaField,SelectField } from 'react-semantic-redux-
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import {addPost} from './postsActions';
-
+import {  push } from 'react-router-redux';
 
 
 export class AddPost extends Component{
 
-  componentDidMount() {
-  }
-
-
-
-
   render (){
+     let save = (values)=>{
+      this.props.dispatch(addPost(values));
+    };
+     const { error,handleSubmit,pristine, reset, submitting } = this.props;
     let options=[];
     if(this.props.categories!==null && this.props.categories!==undefined){
       options= this.props.categories.reduce(function(options, categorie){
@@ -31,12 +29,12 @@ export class AddPost extends Component{
       style={{ height: '100%'}}
       verticalAlign='middle'>
       <Grid.Column style={{ maxWidth: 450 }}>
-        <Form>
+        <Form onSubmit={handleSubmit(save)}>
           <Field name='title' component={LabelInputField} placeholder='Title' />
           <Field name='author' component={LabelInputField} placeholder='Author' />
           <Field name='body' component={TextAreaField} placeholder='Body' />
           <Field name='category' component={SelectField} placeholder='Select category' options={options} />
-          <Form.Field control={Button} primary className='submit-btn'
+          <Form.Field control={Button} primary className='submit-btn' disabled={pristine || submitting}
             type='submit'>
             Submit
           </Form.Field>
@@ -69,7 +67,8 @@ const validate = values => {
 }
 function mapStateToProps (state) {
   return {
-    categories: state.categoriesReducer.categories
+    categories: state.categoriesReducer.categories,
+    submitSuccess:state.form.addPostForm.submitSucceeded
   }
 }
 
@@ -86,6 +85,5 @@ AddPost = connect(
 
 export default reduxForm({
     form: 'addPostForm',
-     enableReinitialize: true,
     validate
 })(AddPost);

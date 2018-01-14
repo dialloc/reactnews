@@ -11,11 +11,15 @@ const headers = {
   'Accept': 'application/json',
   'Authorization': token
 }
+function getNewPostId() {
+  var text = "";
+  var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 
-export const get = (bookId) =>
-  fetch(`${api}/books/${bookId}`, { headers })
-    .then(res => res.json())
-    .then(data => data.book)
+  for (var i = 0; i < 5; i++)
+    text += possible.charAt(Math.floor(Math.random() * possible.length));
+
+  return text;
+}
 
 export const getCategories = () =>
   fetch(`${api}/categories`, { headers })
@@ -36,25 +40,18 @@ export const getPosts = (category,sortBy) =>{
    .then(data=> data.sort((a,b) => a[sort]>b[sort]));
 }
 
-
-
-export const update = (book, shelf) =>
-  fetch(`${api}/books/${book.id}`, {
-    method: 'PUT',
-    headers: {
-      ...headers,
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({ shelf })
-  }).then(res => res.json())
-
-export const search = (query, maxResults) =>
-  fetch(`${api}/search`, {
-    method: 'POST',
-    headers: {
-      ...headers,
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({ query, maxResults })
-  }).then(res => res.json())
-    .then(data => data.books)
+export const addPost = (post) =>{
+console.log('NewsApi addPost post '+post);
+ if(!post.id){
+   post.id=getNewPostId();
+   post.timestamp=Date.now();
+ }
+ return fetch(`${api}/posts`, {
+   method: 'POST',
+   headers: {
+     ...headers,
+     'Content-Type': 'application/json'
+   },
+   body: JSON.stringify({ post })
+ }).then(res => res.json());
+}

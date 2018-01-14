@@ -8,6 +8,8 @@ const postsReducer = (state={},action)=>{
       return {...state,posts:action.posts,fetchingPosts:false};
     case SORT_POSTS:
       return {...state,sortBy:action.sortBy};
+    case SORT_POSTS:
+        return {...state,postAdded:true};
     default:
     break;
   }
