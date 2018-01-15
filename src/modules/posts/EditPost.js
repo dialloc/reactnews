@@ -3,15 +3,30 @@ import { Field, reduxForm } from 'redux-form';
 import { Button , Container , Grid, Form} from 'semantic-ui-react'
 import { LabelInputField,TextAreaField,SelectField } from 'react-semantic-redux-form';
 import { connect } from 'react-redux';
-import {addPost} from './postsActions';
+import {editPost , getPostDetails} from './postsActions';
 
 
 
-export class AddPost extends Component{
+export class EditPost extends Component{
 
+  componentDidMount() {
+    const { match} = this.props;
+    if(match.params.id!==null){
+        this.props.dispatch(getPostDetails(match.params.id));
+    }
+  }
+
+  componentWillReceiveProps(newProps) {
+    const{post} =newProps;
+    console.log("post ="+post);
+    console.log("this.props.id="+this.props.id);
+    if(this.props.editValues===null || this.props.editValues===undefined) {
+      this.props.initialize(post);
+    }
+  }
   render (){
      let save = (values)=>{
-      this.props.dispatch(addPost(values));
+      this.props.dispatch(editPost(this.props.editValues));
     };
      const { handleSubmit,pristine, submitting } = this.props;
     let options=[];
@@ -21,10 +36,10 @@ export class AddPost extends Component{
           return options;
         },[]);
     }
-    console.log(options);
+
     return (
       <Container>
-      <Grid className="AddPost" columns={3}
+      <Grid className="EditPost" columns={3}
       style={{ height: '100%'}}
       verticalAlign='middle'>
       <Grid.Column style={{ maxWidth: 450 }}>
@@ -33,7 +48,7 @@ export class AddPost extends Component{
           <Field name='author' component={LabelInputField} placeholder='Author' />
           <Field name='body' component={TextAreaField} placeholder='Body' />
           <Field name='category' component={SelectField} placeholder='Select category' options={options} />
-          <Form.Field control={Button} primary className='submit-btn' disabled={pristine || submitting}
+          <Form.Field control={Button} primary className='submit-btn'
             type='submit'>
             Submit
           </Form.Field>
@@ -67,7 +82,9 @@ const validate = values => {
 function mapStateToProps (state) {
   return {
     categories: state.categoriesReducer.categories,
-    submitSuccess:state.form.addPostForm.submitSucceeded
+    submitSuccess:state.form.editPostForm.submitSucceeded,
+    editValues:state.form.editPostForm.values,
+    post: state.postsReducer.post
   }
 }
 
@@ -77,12 +94,13 @@ function mapDispatchToProps (dispatch) {
   }
 }
 
-AddPost = connect(
+EditPost = connect(
   mapStateToProps,
-  mapDispatchToProps
-)(AddPost);
+  mapDispatchToProps,
+)(EditPost);
 
 export default reduxForm({
-    form: 'addPostForm',
+    form: 'editPostForm',
+    enableReinitialize : true ,
     validate
-})(AddPost);
+})(EditPost);

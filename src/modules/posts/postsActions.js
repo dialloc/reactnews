@@ -1,5 +1,5 @@
 import * as newsApi from '../../apis/NewsAPI';
-import {  push } from 'react-router-redux'
+import {  push } from 'react-router-redux';
 
 export const FETCH_POSTS = 'FETCH_POSTS';
 
@@ -9,9 +9,11 @@ export const SORT_POSTS = 'SORT_POSTS';
 
 export const ADD_POST = 'ADD_POST';
 
-export const UPDATE_POST = 'UPDATE_POST';
+export const EDIT_POST = 'EDIT_POST';
 
-export const SAVE_POST_SUCCESS = 'SAVE_POST_SUCCESS';
+export const SHOW_POST = 'SHOW_POST';
+
+export const SHOW_POST_COMMENTS = 'SHOW_POST_COMMENTS';
 
 export function fetchPosts (category,sortBy) {
   return (dispatch) => {
@@ -31,7 +33,27 @@ export function addPost (data) {
   return (dispatch) => {
     return  newsApi.addPost(data).then((result) => {
       console.log(result);
-           dispatch(push('/'));
+           dispatch(push(`/post/${result.id}`));
+         });
+    }
+}
+
+export function editPost (data) {
+  console.log('update post : '+data);
+  return (dispatch) => {
+    return  newsApi.editPost(data).then((result) => {
+      console.log(result);
+           dispatch(push(`/post/${result.id}`));
+         });
+    }
+}
+
+export function getPostDetails (idPost) {
+  console.log('get post details : '+idPost);
+  return (dispatch) => {
+    return  newsApi.getPostDetails(idPost).then((result) => {
+      console.log(result);
+           dispatch({type:SHOW_POST,post:result});
          });
     }
 }

@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { Button, Item, Label , Container, Select, Divider} from 'semantic-ui-react'
+import {  Item, Label , Container, Select, Divider} from 'semantic-ui-react'
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import {fetchPosts,sortPosts} from './postsActions'
@@ -8,7 +8,7 @@ import {fetchPosts,sortPosts} from './postsActions'
 export class ListPosts extends Component{
 
   componentDidMount() {
-    const { match, sortBy, dispatch} = this.props
+    const { match, sortBy} = this.props
     this.props.dispatch(fetchPosts(match.params.category,sortBy));
 
   }
@@ -16,7 +16,7 @@ export class ListPosts extends Component{
   componentWillReceiveProps(newProps) {
     if(newProps.match.params.category !== this.props.match.params.category
       || newProps.sortBy !== this.props.sortBy) {
-      const { match, sortBy, dispatch} = newProps;
+      const { match, sortBy} = newProps;
       this.props.dispatch(fetchPosts(match.params.category,sortBy));
     }
 

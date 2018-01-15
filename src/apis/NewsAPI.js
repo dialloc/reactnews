@@ -26,6 +26,11 @@ export const getCategories = () =>
     .then(res => res.json())
     .then(data => data.categories);
 
+export const getPostDetails = (idPost) =>
+  fetch(`${api}/posts/${idPost}`, { headers })
+    .then(res => res.json());
+
+
 export const getPosts = (category,sortBy) =>{
   let cat='';
   if(category && category!==''){
@@ -52,6 +57,19 @@ console.log('NewsApi addPost post '+post);
      ...headers,
      'Content-Type': 'application/json'
    },
-   body: JSON.stringify({ post })
+   body: JSON.stringify(post)
+ }).then(res => res.json());
+}
+
+
+export const editPost = (post) =>{
+console.log('NewsApi edit  post '+post);
+ return fetch(`${api}/posts/${post.id}`, {
+   method: 'PUT',
+   headers: {
+     ...headers,
+     'Content-Type': 'application/json'
+   },
+   body: JSON.stringify(post)
  }).then(res => res.json());
 }

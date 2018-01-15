@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Route } from 'react-router-dom';
-import logo from './logo.svg';
-import {NavBar,ListPosts,Post,AddPost} from './modules';
+import {NavBar,ListPosts,Post,AddPost,EditPost} from './modules';
 import { Divider} from 'semantic-ui-react'
 import './App.css';
 
@@ -17,6 +16,7 @@ class App extends Component {
         <Route   path='/category/:category'  component={ListPosts} />
         <Route  path='/post/:id'  component={Post} />
         <Route  path='/add-post'  component={AddPost} />
+        <Route  path='/edit-post/:id'  component={EditPost} />
       </div>
     );
   }
