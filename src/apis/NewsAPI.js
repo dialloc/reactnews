@@ -73,3 +73,26 @@ console.log('NewsApi edit  post '+post);
    body: JSON.stringify(post)
  }).then(res => res.json());
 }
+
+export const deletePost = (idPost) =>{
+console.log('Delete post '+idPost);
+ return fetch(`${api}/posts/${idPost}`, {
+   method: 'DELETE',
+   headers: {
+     ...headers,
+     'Content-Type': 'application/json'
+   }
+ }).then(res => res.json());
+}
+
+export const votePost = (idPost,option) =>{
+console.log('vote post '+idPost+' option====>'+option);
+ return fetch(`${api}/posts/${idPost}`, {
+   method: 'POST',
+   headers: {
+     ...headers,
+     'Content-Type': 'application/json'
+   },
+   body:JSON.stringify({"option":option}) 
+ }).then(res => res.json());
+}

@@ -42,6 +42,9 @@ export class ListPosts extends Component{
                     <Item.Meta>
                       <span className='author'>by {post.author} on {post.timestamp}</span>
                     </Item.Meta>
+                    <Item.Meta>
+                      in <Link to={`/category/${post.category}`} name={post.category}>{post.category}</Link>
+                    </Item.Meta>                    
                     <Item.Description>{post.body}</Item.Description>
                     <Item.Extra>
                     {post.voteScore >0 &&

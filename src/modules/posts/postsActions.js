@@ -13,6 +13,8 @@ export const EDIT_POST = 'EDIT_POST';
 
 export const SHOW_POST = 'SHOW_POST';
 
+export const VOTE_POST = 'VOTE_POST';
+
 export const SHOW_POST_COMMENTS = 'SHOW_POST_COMMENTS';
 
 export function fetchPosts (category,sortBy) {
@@ -44,6 +46,26 @@ export function editPost (data) {
     return  newsApi.editPost(data).then((result) => {
       console.log(result);
            dispatch(push(`/post/${result.id}`));
+         });
+    }
+}
+
+export function deletePost (idPost) {
+  console.log('delete post : '+idPost);
+  return (dispatch) => {
+    return  newsApi.deletePost(idPost).then((result) => {
+      console.log(result);
+           dispatch(push(`/`));
+         });
+    }
+}
+
+export function votePost (idPost,option) {
+  console.log('votePost post : '+idPost+' option: '+option);
+  return (dispatch) => {
+    return  newsApi.votePost(idPost,option).then((result) => {
+      console.log(result);
+            dispatch({type:SHOW_POST,post:result});
          });
     }
 }

@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import { Item, Label , Container, Button, Divider} from 'semantic-ui-react'
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import {getPostDetails} from './postsActions'
+import {getPostDetails,deletePost,votePost} from './postsActions'
 
 
 export class Post extends Component{
@@ -25,6 +25,9 @@ export class Post extends Component{
                  <Item.Meta>
                    <span className='author'>by {post.author} on {post.timestamp}</span>
                  </Item.Meta>
+                 <Item.Meta>
+                   in <Link to={`/category/${post.category}`} name={post.category}>{post.category}</Link>
+                 </Item.Meta>
                  <Item.Description>{post.body}</Item.Description>
                  <Item.Extra>
                  {post.voteScore >0 &&
@@ -39,9 +42,10 @@ export class Post extends Component{
              </Item>
              <Divider hidden/>
              <div>
-               <Button icon='edit' content='Edit'/>
-               <Button icon='delete' content='Delete'/>
-               <Button icon='like outline' content='Vote'/>
+               <Button icon='edit' as={Link} to={`/edit-post/${post.id}`} content='Edit'/>
+               <Button icon='delete'onClick={()=>this.props.dispatch(deletePost(post.id))} content='Delete'/>
+               <Button icon='like outline' onClick={()=>this.props.dispatch(votePost(post.id,'upVote'))} />
+               <Button icon='dislike outline' onClick={()=>this.props.dispatch(votePost(post.id,'downVote'))} />
              </div>
          </Container>
        )
