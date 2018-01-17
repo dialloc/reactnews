@@ -79,3 +79,12 @@ export function getPostDetails (idPost) {
          });
     }
 }
+export function getPostComments (idPost) {
+  console.log('get post comments : '+idPost);
+  return (dispatch) => {
+    return  newsApi.getPostComments(idPost).then((result) => {
+      console.log(result);
+           dispatch({type:SHOW_POST_COMMENTS,comments:result});
+         });
+    }
+}

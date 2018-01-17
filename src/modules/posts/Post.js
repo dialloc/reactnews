@@ -1,9 +1,11 @@
 import React, {Component} from 'react';
-import { Item, Label , Container, Button, Divider} from 'semantic-ui-react'
+import { Item, Label , Container, Button, Divider,Form} from 'semantic-ui-react'
+import { Field, reduxForm } from 'redux-form';
+import { TextAreaField } from 'react-semantic-redux-form';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import {getPostDetails,deletePost,votePost} from './postsActions'
-
+import {getPostDetails,deletePost,votePost,getPostComments} from './postsActions'
+import {ListComments} from './ListComments'
 
 export class Post extends Component{
 
@@ -11,6 +13,7 @@ export class Post extends Component{
   componentDidMount() {
     const { match} = this.props;
     this.props.dispatch(getPostDetails(match.params.id));
+    this.props.dispatch(getPostComments(match.params.id));
 
   }
 
@@ -18,8 +21,8 @@ export class Post extends Component{
      const post=this.props.post;
      if(post){
        return (
-         <Container>
-             <Item key={post.id} style={{ textAlign: 'left' }}>
+         <Container  style={{ textAlign: 'left' }}>
+             <Item key={post.id}>
                <Item.Content>
                  <Item.Header as={Link} to={"/post/"+post.id}>{post.title}</Item.Header>
                  <Item.Meta>
@@ -47,7 +50,17 @@ export class Post extends Component{
                <Button icon='like outline' onClick={()=>this.props.dispatch(votePost(post.id,'upVote'))} />
                <Button icon='dislike outline' onClick={()=>this.props.dispatch(votePost(post.id,'downVote'))} />
              </div>
+             <ListComments comments={this.props.comments}/>
+             <Divider hidden/>
+             <Form>
+             <Field name='body' component={TextAreaField} placeholder='Your comment' />
+             <Form.Field control={Button} primary className='submit-btn'
+               type='submit'>
+               Add Comment
+             </Form.Field>
+           </Form>
          </Container>
+
        )
      } return null;
 
@@ -56,7 +69,8 @@ export class Post extends Component{
 
 function mapStateToProps (state) {
   return {
-    post: state.postsReducer.post
+    post: state.postsReducer.post,
+    comments: state.postsReducer.comments
   }
 }
 
@@ -66,7 +80,11 @@ function mapDispatchToProps (dispatch) {
   }
 }
 
-export default connect(
+Post= connect(
   mapStateToProps,
   mapDispatchToProps
 )(Post)
+
+export default reduxForm({
+    form: 'addCommentForm'
+})(Post);

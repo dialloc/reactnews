@@ -93,6 +93,10 @@ console.log('vote post '+idPost+' option====>'+option);
      ...headers,
      'Content-Type': 'application/json'
    },
-   body:JSON.stringify({"option":option}) 
+   body:JSON.stringify({"option":option})
  }).then(res => res.json());
 }
+
+export const getPostComments = (idPost) =>
+  fetch(`${api}/posts/${idPost}/comments`, { headers })
+    .then(res => res.json());
