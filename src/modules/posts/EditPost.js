@@ -20,9 +20,12 @@ export class EditPost extends Component{
     const{post} =newProps;
     console.log("post ="+post);
     console.log("this.props.id="+this.props.id);
-    if(this.props.editValues===null || this.props.editValues===undefined) {
-      this.props.initialize(post);
+    if((newProps.match.params.id !== this.props.match.params.id)
+    || (this.props.editValues===null || this.props.editValues===undefined) ){
+        this.props.initialize(post);
+         
     }
+
   }
   render (){
      let save = (values)=>{

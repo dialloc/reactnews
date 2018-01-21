@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
-import { Comment,Header, Label , Container, Divider} from 'semantic-ui-react'
+import { Comment,Header, Label , Container, Divider, Button} from 'semantic-ui-react'
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import {getPostComments} from './postsActions'
+import {getPostComments , deleteComment, voteComment} from './postsActions'
 
 
 export class ListComments extends Component{
@@ -10,6 +10,7 @@ export class ListComments extends Component{
 
   render (){
     console.log(this.props.idPost);
+    const {idPost , dispatch , comments}=this.props;
     return (
       <Container className="ListComments">
        <Header as='h3' dividing>Comments</Header>
@@ -33,7 +34,18 @@ export class ListComments extends Component{
                     }
                     </Comment.Metadata>
                     <Comment.Actions>
-                     <Comment.Action>Reply</Comment.Action>
+                    <Comment.Action>
+                      <Button icon='edit' as={Link} to={`/edit-comment/${com.id}`} content='Edit'/>
+                    </Comment.Action>
+                    <Comment.Action>
+                      <Button icon='delete'onClick={()=>this.props.dispatch(deleteComment(com.id))} content='Delete'/>
+                    </Comment.Action>
+                    <Comment.Action>
+                      <Button icon='like outline' onClick={()=>this.props.dispatch(voteComment(com.id,'upVote'))} />
+                    </Comment.Action>
+                    <Comment.Action>
+                      <Button icon='dislike outline' onClick={()=>this.props.dispatch(voteComment(com.id,'downVote'))} />
+                     </Comment.Action>
                     </Comment.Actions>
                   </Comment.Content>
                 </Comment>

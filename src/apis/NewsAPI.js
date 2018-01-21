@@ -100,3 +100,56 @@ console.log('vote post '+idPost+' option====>'+option);
 export const getPostComments = (idPost) =>
   fetch(`${api}/posts/${idPost}/comments`, { headers })
     .then(res => res.json());
+
+export const addComment = (com) =>{
+console.log('NewsApi addcomment com '+com);
+ if(!com.id){
+   com.id=getNewPostId();
+   com.timestamp=Date.now();
+ }
+ return fetch(`${api}/comments`, {
+   method: 'POST',
+   headers: {
+     ...headers,
+     'Content-Type': 'application/json'
+   },
+   body: JSON.stringify(com)
+ }).then(res => res.json());
+}
+
+export const voteComment = (idComment,option) =>{
+console.log('vote comment '+idComment+' option====>'+option);
+ return fetch(`${api}/comments/${idComment}`, {
+   method: 'POST',
+   headers: {
+     ...headers,
+     'Content-Type': 'application/json'
+   },
+   body:JSON.stringify({"option":option})
+ }).then(res => res.json());
+}
+export const deleteComment = (idComment) =>{
+console.log('Delete comment '+idComment);
+ return fetch(`${api}/comments/${idComment}`, {
+   method: 'DELETE',
+   headers: {
+     ...headers,
+     'Content-Type': 'application/json'
+   }
+ }).then(res => res.json());
+}
+
+export const editComment = (comment) =>{
+console.log('NewsApi edit  comment '+comment);
+ return fetch(`${api}/comments/${comment.id}`, {
+   method: 'PUT',
+   headers: {
+     ...headers,
+     'Content-Type': 'application/json'
+   },
+   body: JSON.stringify(comment)
+ }).then(res => res.json());
+}
+export const getComment = (idComment) =>
+  fetch(`${api}/comments/${idComment}`, { headers })
+    .then(res => res.json());

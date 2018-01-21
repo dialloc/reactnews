@@ -1,4 +1,5 @@
-import { FETCH_POSTS , DISPLAY_POSTS , SORT_POSTS ,SHOW_POST,SHOW_POST_COMMENTS} from './postsActions';
+import { FETCH_POSTS , DISPLAY_POSTS , SORT_POSTS ,SHOW_POST,DISPLAY_COMMENT,
+  SHOW_POST_COMMENTS,ADD_COMMENT_SUCESS,DELETE_COMMENT_SUCESS,UPDATE_COMMENT_SUCESS} from './postsActions';
 
 const postsReducer = (state={},action)=>{
   switch(action.type){
@@ -12,6 +13,24 @@ const postsReducer = (state={},action)=>{
         return {...state,post:action.post};
     case SHOW_POST_COMMENTS:
         return {...state,comments:action.comments};
+    case ADD_COMMENT_SUCESS:
+    return {...state,
+      comments:[...state.comments,action.newComment]};
+    case DELETE_COMMENT_SUCESS:
+    return {...state,
+      comments:state.comments.filter((c) => c.id!==action.idComment)};
+    case UPDATE_COMMENT_SUCESS:
+      var comments=state.comments.filter((c) => c.id!==action.comment.id);
+      if(comments && comments.length>0){
+        comments.push(action.comment);
+      }else{
+        comments=[action.comment];
+      }
+      return {...state,
+        comments:comments
+      };
+    case DISPLAY_COMMENT:
+      return {...state,comment:action.comment};
     default:
     break;
   }

@@ -11,30 +11,36 @@ export class NavBar extends Component{
     this.props.dispatch(fetchCategories());
 
   }
+
   render (){
     return (
-          <Container className="NavBar">
-            <Menu stackable>
-             <Menu.Item as={Link} to='/' name='ReactNews' />
-             {this.props.categories&& this.props.categories
-               .map( (cat)=>(
-                 <Menu.Item  key={cat.path} as={Link} to={'/category/'+cat.path} name={cat.name} />
-               ))
-             }
-             <Menu.Menu position='right'>
-               <Menu.Item>
-                 <Link to='/add-post' name='Add Post'>Add Post</Link>
-               </Menu.Item>
-           </Menu.Menu>
-            </Menu>
-          </Container>
+        <NavBarItems categories={this.props.categories} />
     )
   }
 }
+const NavBarItems = ({categories})=>{
+  return (
+        <Container className="NavBar">
+          <Menu stackable>
+           <Menu.Item as={Link} to='/' name='ReactNews' />
+           {categories && categories
+             .map( (cat)=>(
+               <Menu.Item  key={cat.path} as={Link} to={'/category/'+cat.path} name={cat.name} />
+             ))
+           }
+           <Menu.Menu position='right'>
+             <Menu.Item>
+               <Link to='/add-post' name='Add Post'>Add Post</Link>
+             </Menu.Item>
+         </Menu.Menu>
+          </Menu>
+        </Container>
+  )
+}
 
-function mapStateToProps (state) {
+function mapStateToProps ({categoriesReducer}) {
   return {
-    categories: state.categoriesReducer.categories
+    categories: categoriesReducer.categories
   }
 }
 function mapDispatchToProps (dispatch) {

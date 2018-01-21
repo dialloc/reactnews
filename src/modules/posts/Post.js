@@ -4,8 +4,10 @@ import { Field, reduxForm } from 'redux-form';
 import { TextAreaField } from 'react-semantic-redux-form';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import {getPostDetails,deletePost,votePost,getPostComments} from './postsActions'
+import {getPostDetails,deletePost,votePost,getPostComments,addComment} from './postsActions'
 import {ListComments} from './ListComments'
+import {AddComment} from './AddComment'
+
 
 export class Post extends Component{
 
@@ -20,6 +22,9 @@ export class Post extends Component{
   render (){
      const post=this.props.post;
      if(post){
+       let saveComment = (values)=>{
+        this.props.dispatch(addComment(values,post));
+      };
        return (
          <Container  style={{ textAlign: 'left' }}>
              <Item key={post.id}>
@@ -50,15 +55,8 @@ export class Post extends Component{
                <Button icon='like outline' onClick={()=>this.props.dispatch(votePost(post.id,'upVote'))} />
                <Button icon='dislike outline' onClick={()=>this.props.dispatch(votePost(post.id,'downVote'))} />
              </div>
-             <ListComments comments={this.props.comments}/>
-             <Divider hidden/>
-             <Form>
-             <Field name='body' component={TextAreaField} placeholder='Your comment' />
-             <Form.Field control={Button} primary className='submit-btn'
-               type='submit'>
-               Add Comment
-             </Form.Field>
-           </Form>
+             <ListComments comments={this.props.comments} dispatch={this.props.dispatch}/>
+             <AddComment post={post} />
          </Container>
 
        )
@@ -80,11 +78,7 @@ function mapDispatchToProps (dispatch) {
   }
 }
 
-Post= connect(
+export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(Post)
-
-export default reduxForm({
-    form: 'addCommentForm'
-})(Post);
