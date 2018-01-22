@@ -38,13 +38,13 @@ export class ListPosts extends Component{
               .map( (post)=>(
                 <Item key={post.id} style={{ textAlign: 'left' }}>
                   <Item.Content>
-                    <Item.Header as={Link} to={"/post/"+post.id}>{post.title}</Item.Header>
+                    <Item.Header as={Link} to={`/${post.category}/${post.id}`}>{post.title}</Item.Header>
                     <Item.Meta>
                       <span className='author'>by {post.author} on {post.timestamp}</span>
                     </Item.Meta>
                     <Item.Meta>
-                      in <Link to={`/category/${post.category}`} name={post.category}>{post.category}</Link>
-                    </Item.Meta>                    
+                      in <Link to={`/${post.category}`} name={post.category}>{post.category}</Link>
+                    </Item.Meta>
                     <Item.Description>{post.body}</Item.Description>
                     <Item.Extra>
                     {post.voteScore >0 &&

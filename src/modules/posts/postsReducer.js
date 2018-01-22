@@ -14,10 +14,14 @@ const postsReducer = (state={},action)=>{
     case SHOW_POST_COMMENTS:
         return {...state,comments:action.comments};
     case ADD_COMMENT_SUCESS:
-    return {...state,
+    let mpost=state.post;
+    mpost.commentCount++;
+    return {...state,post:mpost,
       comments:[...state.comments,action.newComment]};
     case DELETE_COMMENT_SUCESS:
-    return {...state,
+    let dpost=state.post;
+    dpost.commentCount--;
+    return {...state,post:dpost,
       comments:state.comments.filter((c) => c.id!==action.idComment)};
     case UPDATE_COMMENT_SUCESS:
       var comments=state.comments.filter((c) => c.id!==action.comment.id);

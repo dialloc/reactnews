@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Route } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 import {NavBar,ListPosts,Post,AddPost,EditPost,EditComment} from './modules';
 import { Divider} from 'semantic-ui-react'
 import './App.css';
@@ -12,12 +12,14 @@ class App extends Component {
       <div className="App">
         <NavBar/>
         <Divider hidden/>
-        <Route exact path='/' component={ListPosts} />
-        <Route   path='/category/:category'  component={ListPosts} />
-        <Route  path='/post/:id'  component={Post} />
-        <Route  path='/add-post'  component={AddPost} />
-        <Route  path='/edit-post/:id'  component={EditPost} />
-        <Route  path='/edit-comment/:id'  component={EditComment} />
+        <Switch>
+          <Route exact path='/' component={ListPosts} />
+          <Route exact  path='/add-post'  component={AddPost} />
+          <Route exact path='/edit-post/:id'  component={EditPost} />
+          <Route exact path='/edit-comment/:id'  component={EditComment} />
+          <Route exact  path='/:category'  component={ListPosts} />
+          <Route exact path='/:category/:id'  component={Post} />
+        </Switch>
       </div>
     );
   }

@@ -25,7 +25,7 @@ const NavBarItems = ({categories})=>{
            <Menu.Item as={Link} to='/' name='ReactNews' />
            {categories && categories
              .map( (cat)=>(
-               <Menu.Item  key={cat.path} as={Link} to={'/category/'+cat.path} name={cat.name} />
+               <Menu.Item  key={cat.path} as={Link} to={'/'+cat.path} name={cat.name} />
              ))
            }
            <Menu.Menu position='right'>

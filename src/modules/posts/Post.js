@@ -29,12 +29,12 @@ export class Post extends Component{
          <Container  style={{ textAlign: 'left' }}>
              <Item key={post.id}>
                <Item.Content>
-                 <Item.Header as={Link} to={"/post/"+post.id}>{post.title}</Item.Header>
+                 <Item.Header as={Link} to={`/${post.category}/${post.id}`}>{post.title}</Item.Header>
                  <Item.Meta>
                    <span className='author'>by {post.author} on {post.timestamp}</span>
                  </Item.Meta>
                  <Item.Meta>
-                   in <Link to={`/category/${post.category}`} name={post.category}>{post.category}</Link>
+                   in <Link to={`/${post.category}`} name={post.category}>{post.category}</Link>
                  </Item.Meta>
                  <Item.Description>{post.body}</Item.Description>
                  <Item.Extra>
@@ -50,12 +50,14 @@ export class Post extends Component{
              </Item>
              <Divider hidden/>
              <div>
-               <Button icon='edit' as={Link} to={`/edit-post/${post.id}`} content='Edit'/>
-               <Button icon='delete'onClick={()=>this.props.dispatch(deletePost(post.id))} content='Delete'/>
+               <Button icon='edit' color={'green'} as={Link} to={`/edit-post/${post.id}`} content='Edit'/>
+               <Button icon='delete' color={'red'} onClick={()=>this.props.dispatch(deletePost(post.id))} content='Delete'/>
                <Button icon='like outline' onClick={()=>this.props.dispatch(votePost(post.id,'upVote'))} />
                <Button icon='dislike outline' onClick={()=>this.props.dispatch(votePost(post.id,'downVote'))} />
              </div>
+             <Divider hidden/>
              <ListComments comments={this.props.comments} dispatch={this.props.dispatch}/>
+              <Divider hidden/>
              <AddComment post={post} />
          </Container>
 

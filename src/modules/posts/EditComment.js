@@ -39,6 +39,7 @@ export class EditComment extends Component{
       verticalAlign='middle'>
       <Grid.Column style={{ maxWidth: 450 }}>
           <Form onSubmit={handleSubmit(saveComment)}>
+             <Field name='author' component={LabelInputField} placeholder='Author' />
              <Field name='body' component={TextAreaField} placeholder='Your comment' />
              <Form.Field control={Button}  primary className='submit-btn'
                type='submit'>
@@ -66,6 +67,9 @@ function mapDispatchToProps (dispatch) {
 }
 const validate = values => {
   const errors = {}
+  if (!values.author || values.author.trim()==='') {
+    errors.author = 'Author is mandatory'
+  }
   if (!values.body || values.body.trim()==='') {
     errors.body = 'Comment content cannot by empty'
   }

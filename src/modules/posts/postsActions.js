@@ -110,7 +110,6 @@ export function getComment(idComment) {
 export function addComment (comment,post) {
   console.log('add comment : '+comment);
   comment.parentId=post.id;
-  comment.author='John Doe';
   return (dispatch) => {
     return  newsApi.addComment(comment).then((result) => {
       console.log(result);

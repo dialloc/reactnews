@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import { Button,Form} from 'semantic-ui-react'
 import { reduxForm , Field ,reset} from 'redux-form';
-import { TextAreaField } from 'react-semantic-redux-form';
+import {LabelInputField, TextAreaField } from 'react-semantic-redux-form';
 import { connect } from 'react-redux';
 import {addComment} from './postsActions'
 
@@ -20,6 +20,7 @@ export class AddComment extends Component{
       };
        return (
           <Form onSubmit={handleSubmit(saveComment)}>
+             <Field name='author' component={LabelInputField} placeholder='Author' />
              <Field name='body' component={TextAreaField} placeholder='Your comment' />
              <Form.Field control={Button}  primary className='submit-btn' disabled={pristine || submitting}
                type='submit'>
@@ -43,6 +44,9 @@ function mapDispatchToProps (dispatch) {
 }
 const validate = values => {
   const errors = {}
+  if (!values.author || values.author.trim()==='') {
+    errors.author = 'Author is mandatory'
+  }
   if (!values.body || values.body.trim()==='') {
     errors.body = 'Comment content cannot by empty'
   }
