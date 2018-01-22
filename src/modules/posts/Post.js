@@ -19,9 +19,15 @@ export class Post extends Component{
 
   }
 
+  componentWillReceiveProps(newProps) {
+    const { match} = this.props;
+    this.props.dispatch(getPostDetails(match.params.id));
+    this.props.dispatch(getPostComments(match.params.id));
+      }
+
   render (){
      const post=this.props.post;
-     if(post){
+     if(post && post.category!==null && post.category!==undefined){
        let saveComment = (values)=>{
         this.props.dispatch(addComment(values,post));
       };
@@ -62,7 +68,7 @@ export class Post extends Component{
          </Container>
 
        )
-     } return null;
+     }  return (<h1 color={'red'}>This post does not exist</h1>);;
 
   }
 }

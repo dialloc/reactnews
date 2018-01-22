@@ -11,6 +11,8 @@ export const ADD_POST = 'ADD_POST';
 
 export const EDIT_POST = 'EDIT_POST';
 
+export const DELETE_POST ='DELETE_POST';
+
 export const SHOW_POST = 'SHOW_POST';
 
 export const VOTE_POST = 'VOTE_POST';
@@ -67,7 +69,15 @@ export function deletePost (idPost) {
          });
     }
 }
-
+export function deletePostInList (idPost) {
+  console.log('delete post : '+idPost);
+  return (dispatch) => {
+    return  newsApi.deletePost(idPost).then((result) => {
+      console.log(result);
+           dispatch({type:DELETE_POST,idPost:idPost});
+         });
+    }
+}
 export function votePost (idPost,option) {
   console.log('votePost post : '+idPost+' option: '+option);
   return (dispatch) => {

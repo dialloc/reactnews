@@ -1,22 +1,22 @@
 import React, {Component} from 'react';
-import {  Item, Label , Container, Select, Divider} from 'semantic-ui-react'
+import {  Item, Label , Container, Select, Divider,Button} from 'semantic-ui-react'
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import {fetchPosts,sortPosts} from './postsActions'
+import {fetchPosts,sortPosts,deletePostInList,votePost} from './postsActions'
 
 
 export class ListPosts extends Component{
 
   componentDidMount() {
-    const { match, sortBy} = this.props
+    const { match, sortBy,postChanged} = this.props
     this.props.dispatch(fetchPosts(match.params.category,sortBy));
 
   }
 
   componentWillReceiveProps(newProps) {
     if(newProps.match.params.category !== this.props.match.params.category
-      || newProps.sortBy !== this.props.sortBy) {
-      const { match, sortBy} = newProps;
+      || newProps.sortBy !== this.props.sortBy || newProps.postChanged ) {
+      const { match, sortBy,postChanged} = newProps;
       this.props.dispatch(fetchPosts(match.params.category,sortBy));
     }
 
@@ -55,6 +55,12 @@ export class ListPosts extends Component{
                     }
                       <Label icon='comments' content={post.commentCount} />
                     </Item.Extra>
+                    <div>
+                      <Button icon='edit' color={'green'} as={Link} to={`/edit-post/${post.id}`} content='Edit'/>
+                      <Button icon='delete' color={'red'} onClick={()=>this.props.dispatch(deletePostInList(post.id))} content='Delete'/>
+                      <Button icon='like outline' onClick={()=>this.props.dispatch(votePost(post.id,'upVote'))} />
+                      <Button icon='dislike outline' onClick={()=>this.props.dispatch(votePost(post.id,'downVote'))} />
+                    </div>
                   </Item.Content>
                 </Item>
               ))
@@ -68,7 +74,8 @@ export class ListPosts extends Component{
 function mapStateToProps (state) {
   return {
     posts: state.postsReducer.posts,
-    sortBy: state.postsReducer.sortBy
+    sortBy: state.postsReducer.sortBy,
+    postChanged:state.postsReducer.postChanged
   }
 }
 
