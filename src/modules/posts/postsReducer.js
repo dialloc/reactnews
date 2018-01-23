@@ -4,7 +4,7 @@ import { FETCH_POSTS , DISPLAY_POSTS , SORT_POSTS ,SHOW_POST,DISPLAY_COMMENT,
 const postsReducer = (state={},action)=>{
   switch(action.type){
     case FETCH_POSTS:
-      return {...state,fetchingPosts:true,postChanged:false};
+      return {...state,fetchingPosts:true,postChanged:false,post:{}};
     case DISPLAY_POSTS:
       return {...state,posts:action.posts,fetchingPosts:false,postChanged:false};
     case SORT_POSTS:

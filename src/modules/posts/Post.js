@@ -20,10 +20,12 @@ export class Post extends Component{
   }
 
   componentWillReceiveProps(newProps) {
+    if(newProps.match.params.id !== this.props.match.params.id) {
     const { match} = this.props;
     this.props.dispatch(getPostDetails(match.params.id));
     this.props.dispatch(getPostComments(match.params.id));
       }
+    }
 
   render (){
      const post=this.props.post;
